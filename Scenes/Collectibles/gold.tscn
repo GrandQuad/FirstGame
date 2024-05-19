@@ -1,0 +1,69 @@
+[gd_scene load_steps=12 format=3 uid="uid://bhel44atpxe7u"]
+
+[ext_resource type="Script" path="res://Scenes/Collectibles/gold.gd" id="1_gp5km"]
+[ext_resource type="Texture2D" uid="uid://fc4av2stch23" path="res://Assets/Coin/MonedaD.png" id="2_0ckbf"]
+[ext_resource type="AudioStream" uid="uid://chikfy16ifs08" path="res://Sounds/coin.wav" id="3_o2548"]
+[ext_resource type="Script" path="res://Scenes/Collectibles/AudioStreamPlayer.gd" id="4_6cffv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mrnwp"]
+atlas = ExtResource("2_0ckbf")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0h8cc"]
+atlas = ExtResource("2_0ckbf")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ht3ai"]
+atlas = ExtResource("2_0ckbf")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tqmig"]
+atlas = ExtResource("2_0ckbf")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o2r1q"]
+atlas = ExtResource("2_0ckbf")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kxr7u"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mrnwp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0h8cc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ht3ai")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tqmig")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o2r1q")
+}],
+"loop": true,
+"name": &"Coin",
+"speed": 14.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_x3k7b"]
+
+[node name="Gold" type="Area2D"]
+script = ExtResource("1_gp5km")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_kxr7u")
+animation = &"Coin"
+autoplay = "Coin"
+frame_progress = 0.46011
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_x3k7b")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_o2548")
+script = ExtResource("4_6cffv")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

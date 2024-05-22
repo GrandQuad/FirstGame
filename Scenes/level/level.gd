@@ -80,4 +80,4 @@ func days_anim():
 	
 
 func set_days():
-	days.text = "Days: " + str(day_count)
+	days.text = "Day " + str(day_count)

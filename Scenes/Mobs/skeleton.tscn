@@ -198,6 +198,7 @@ size = Vector2(8, 4.5)
 size = Vector2(20, 4.5)
 
 [node name="Skeleton" type="CharacterBody2D"]
+collision_layer = 4
 script = ExtResource("1_dgt2t")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

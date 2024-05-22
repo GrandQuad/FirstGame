@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scenes/Collectibles/gold.gd" id="1_gp5km"]
 [ext_resource type="Texture2D" uid="uid://fc4av2stch23" path="res://Assets/Coin/MonedaD.png" id="2_0ckbf"]
-[ext_resource type="AudioStream" uid="uid://chikfy16ifs08" path="res://Sounds/coin.wav" id="3_o2548"]
+[ext_resource type="AudioStream" uid="uid://chikfy16ifs08" path="res://Assets/Sounds/coin.wav" id="3_o2548"]
 [ext_resource type="Script" path="res://Scenes/Collectibles/AudioStreamPlayer.gd" id="4_6cffv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mrnwp"]

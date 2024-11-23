@@ -1,0 +1,24 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://dyaqdprj4e3wg"]
+
+[ext_resource type="FontFile" uid="uid://b5oxay0v3l0e0" path="res://Assets/Fonts/Daneehand Regular Cyr.ttf" id="1_6p4ff"]
+[ext_resource type="Texture2D" uid="uid://r1j0ecrxihjt" path="res://Assets/Aseprite/UI_border.png" id="2_tsygt"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p8gvm"]
+texture = ExtResource("2_tsygt")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ba4kf"]
+texture = ExtResource("2_tsygt")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+
+[resource]
+default_font = ExtResource("1_6p4ff")
+Label/fonts/font = ExtResource("1_6p4ff")
+Panel/styles/panel = SubResource("StyleBoxTexture_p8gvm")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_ba4kf")

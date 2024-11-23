@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://d3wlbrqyi4wjc"]
+[gd_scene load_steps=53 format=3 uid="uid://d3wlbrqyi4wjc"]
 
 [ext_resource type="Texture2D" uid="uid://dewysfrd46hyd" path="res://Assets/Monster_Creatures_Fantasy(Version 1.3)/Mushroom/Attack.png" id="1_1ddp5"]
 [ext_resource type="Script" path="res://Scenes/Mobs/Mashroom.gd" id="1_os1ph"]
@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://bsg2bna7tmbp2" path="res://Assets/Monster_Creatures_Fantasy(Version 1.3)/Mushroom/Run.png" id="4_edqur"]
 [ext_resource type="Texture2D" uid="uid://cw2igcnmlfvwj" path="res://Assets/Monster_Creatures_Fantasy(Version 1.3)/Mushroom/Take Hit.png" id="5_socei"]
 [ext_resource type="Texture2D" uid="uid://6rvf2k57x4lb" path="res://Assets/Effects/circle.png" id="7_yqad6"]
+[ext_resource type="PackedScene" uid="uid://dvakcyn24oqag" path="res://Scenes/DamageBox/damage_box.tscn" id="8_x1viu"]
+[ext_resource type="PackedScene" uid="uid://bemvu4pkibokr" path="res://Scenes/Mobs/mob_health.tscn" id="9_kctev"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pqwjo"]
 radius = 9.0
@@ -88,6 +90,22 @@ atlas = ExtResource("3_2n5gf")
 region = Rect2(300, 0, 150, 150)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_528c1"]
+atlas = ExtResource("3_2n5gf")
+region = Rect2(450, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ohvaa"]
+atlas = ExtResource("3_2n5gf")
+region = Rect2(0, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_libso"]
+atlas = ExtResource("3_2n5gf")
+region = Rect2(150, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hhbab"]
+atlas = ExtResource("3_2n5gf")
+region = Rect2(300, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_btgqx"]
 atlas = ExtResource("3_2n5gf")
 region = Rect2(450, 0, 150, 150)
 
@@ -186,7 +204,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Death",
-"speed": 10.0
+"speed": 7.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -204,6 +222,35 @@ animations = [{
 "loop": true,
 "name": &"Idle",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ohvaa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_libso")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hhbab")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_btgqx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ohvaa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_libso")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hhbab")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_btgqx")
+}],
+"loop": false,
+"name": &"Recover",
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -261,6 +308,18 @@ tracks/1/keys = {
 "update": 1,
 "values": ["Attack"]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AttackDirection/DamageBox/HitBox/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
 
 [sub_resource type="Animation" id="Animation_pe5mr"]
 length = 0.5
@@ -288,9 +347,33 @@ tracks/1/keys = {
 "update": 1,
 "values": ["Damage"]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AttackDirection/AttackRange/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AttackDirection/DamageBox/HitBox/CollisionShape2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_30alf"]
-length = 0.4
+length = 3.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -314,6 +397,42 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": ["Death"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AttackDirection/AttackRange/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(2, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AttackDirection/DamageBox/HitBox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_pfkpp"]
@@ -342,6 +461,96 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": ["Idle"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AttackDirection/AttackRange/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_5u7sc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AttackDirection/DamageBox/HitBox/CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AttackDirection/AttackRange/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_gauft"]
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Recover"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AttackDirection/AttackRange/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_lwogd"]
@@ -378,25 +587,27 @@ _data = {
 "Damage": SubResource("Animation_pe5mr"),
 "Death": SubResource("Animation_30alf"),
 "Idle": SubResource("Animation_pfkpp"),
+"RESET": SubResource("Animation_5u7sc"),
+"Recover": SubResource("Animation_gauft"),
 "Run": SubResource("Animation_lwogd")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ehxe0"]
-size = Vector2(15, 15)
+size = Vector2(19.5, 22)
 
 [node name="Mashroom" type="CharacterBody2D"]
 collision_layer = 4
 script = ExtResource("1_os1ph")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CapsuleShape2D_pqwjo")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -13)
 sprite_frames = SubResource("SpriteFrames_gpbvn")
-animation = &"Attack"
+animation = &"Death"
 autoplay = "Idle"
-frame = 6
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -405,6 +616,7 @@ libraries = {
 autoplay = "Idle"
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
 position = Vector2(0, -8)
 scale = Vector2(0.1275, 0.1275)
 texture = ExtResource("7_yqad6")
@@ -416,7 +628,31 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackDirection/AttackRange"]
-position = Vector2(16.5, -2.5)
+position = Vector2(16.25, -2)
 shape = SubResource("RectangleShape2D_ehxe0")
 
+[node name="DamageBox" parent="AttackDirection" instance=ExtResource("8_x1viu")]
+
+[node name="HurtBox" parent="AttackDirection/DamageBox" index="0"]
+collision_layer = 32
+collision_mask = 64
+
+[node name="HitBox" parent="AttackDirection/DamageBox" index="1"]
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape2D" parent="AttackDirection/DamageBox/HitBox" index="0"]
+position = Vector2(18, -2)
+
+[node name="MobHealth" parent="." instance=ExtResource("9_kctev")]
+position = Vector2(-2.38419e-07, -31)
+scale = Vector2(0.18, 0.18)
+max_health = 10
+
 [connection signal="body_entered" from="AttackDirection/AttackRange" to="." method="_on_attack_range_body_entered"]
+[connection signal="area_entered" from="AttackDirection/DamageBox/HurtBox" to="MobHealth" method="_on_hurt_box_area_entered"]
+[connection signal="area_entered" from="AttackDirection/DamageBox/HitBox" to="." method="_on_hit_box_area_entered"]
+[connection signal="damage_received" from="MobHealth" to="." method="_on_mob_health_damage_received"]
+[connection signal="no_health" from="MobHealth" to="." method="_on_mob_health_no_health"]
+
+[editable path="AttackDirection/DamageBox"]

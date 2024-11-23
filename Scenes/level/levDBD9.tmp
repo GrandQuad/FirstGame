@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://c7m5iqmdmoeq7"]
+[gd_scene load_steps=20 format=3 uid="uid://c7m5iqmdmoeq7"]
 
 [ext_resource type="Script" path="res://Scenes/level/level.gd" id="1_ys34v"]
 [ext_resource type="Script" path="res://Scenes/level/manager.gd" id="2_71r3q"]
@@ -8,11 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://ckrtoiphelpi1" path="res://Assets/oak_woods_v1.0/oak_woods_tileset.png" id="5_x86xb"]
 [ext_resource type="PackedScene" uid="uid://3n7n7dwldnw" path="res://Scenes/Build/shop.tscn" id="6_qdohg"]
 [ext_resource type="PackedScene" uid="uid://creil61d6md3n" path="res://Scenes/Player/player.tscn" id="7_okn4v"]
-[ext_resource type="Texture2D" uid="uid://bm38e36xnu1lq" path="res://Assets/oak_woods_v1.0/decorations/lamp.png" id="8_b3ev8"]
 [ext_resource type="PackedScene" uid="uid://cvxo6r5dae5kx" path="res://Scenes/UI/pause_menu.tscn" id="8_yplx2"]
-[ext_resource type="PackedScene" uid="uid://dhouayfxkrkpo" path="res://Scenes/light/lantern.tscn" id="9_d4kfw"]
+[ext_resource type="Texture2D" uid="uid://6rvf2k57x4lb" path="res://Assets/Effects/circle.png" id="9_24pi5"]
 [ext_resource type="PackedScene" uid="uid://qbguev0ggpug" path="res://Scenes/Collectibles/coin.tscn" id="11_1nc7d"]
-[ext_resource type="Script" path="res://Scenes/level/collectibles.gd" id="11_jqelk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nn2qf"]
 texture = ExtResource("5_x86xb")
@@ -475,7 +473,7 @@ length = 3.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DayText:modulate")
+tracks/0/path = NodePath("Days:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -491,7 +489,7 @@ length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DayText:modulate")
+tracks/0/path = NodePath("Days:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -506,7 +504,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DayText:modulate")
+tracks/0/path = NodePath("Days:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -522,6 +520,19 @@ _data = {
 "Days_invisible": SubResource("Animation_pyw4p"),
 "RESET": SubResource("Animation_jpi8w")
 }
+
+[sub_resource type="GDScript" id="GDScript_d4asf"]
+script/source = "extends Node2D
+
+var gold = preload(\"res://Scenes/Collectibles/.tscn\")
+
+func _on_timer_timeout():
+	var goldTemp = gold.instantiate()
+	var _rng = RandomNumberGenerator.new()
+	var randint = randi_range(50, 500)
+	goldTemp.position = Vector2 (randint, 545)
+	add_child(goldTemp)
+"
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_ys34v")
@@ -573,19 +584,38 @@ layer_0/tile_data = PackedInt32Array(2293760, 131072, 0, 2293761, 196608, 0, 229
 [node name="Shop" parent="Buildings" instance=ExtResource("6_qdohg")]
 position = Vector2(365, 496)
 
-[node name="Sprite2D" type="Sprite2D" parent="Buildings"]
-position = Vector2(561, 532)
-texture = ExtResource("8_b3ev8")
-
-[node name="Lantern" parent="Buildings/Sprite2D" instance=ExtResource("9_d4kfw")]
-
 [node name="Light" type="Node2D" parent="."]
 
 [node name="Sun" type="DirectionalLight2D" parent="Light"]
+visible = false
 enabled = false
 energy = 0.95
 blend_mode = 1
 range_layer_min = -1
+
+[node name="PointLight2D" type="PointLight2D" parent="Light"]
+position = Vector2(317, 531)
+scale = Vector2(0.176875, 0.14375)
+color = Color(0.541176, 0.729412, 0.537255, 1)
+energy = 3.0
+shadow_enabled = true
+texture = ExtResource("9_24pi5")
+
+[node name="PointLight2D2" type="PointLight2D" parent="Light"]
+position = Vector2(414, 531)
+scale = Vector2(0.176875, 0.14375)
+color = Color(0.541176, 0.729412, 0.537255, 1)
+energy = 3.0
+shadow_enabled = true
+texture = ExtResource("9_24pi5")
+
+[node name="PointLight2D3" type="PointLight2D" parent="Light"]
+position = Vector2(370, 525)
+scale = Vector2(0.4175, 0.35625)
+color = Color(0.886275, 0.729412, 0.576471, 1)
+energy = 1.5
+texture = ExtResource("9_24pi5")
+texture_scale = 1.26
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Light"]
 occluder = SubResource("OccluderPolygon2D_4o2vn")
@@ -594,12 +624,9 @@ occluder = SubResource("OccluderPolygon2D_4o2vn")
 wait_time = 10.0
 autostart = true
 
-[node name="LightAnimation" type="AnimationPlayer" parent="Light"]
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 2
 
-[node name="DayText" type="Label" parent="CanvasLayer"]
+[node name="Days" type="Label" parent="CanvasLayer"]
 modulate = Color(1, 1, 1, 0)
 offset_left = 524.0
 offset_top = 149.0
@@ -615,17 +642,16 @@ libraries = {
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("8_yplx2")]
 process_mode = 2
-visible = false
 
 [node name="MenuBtn" type="Button" parent="CanvasLayer"]
 process_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -138.0
-offset_top = 31.0
-offset_right = -28.0
-offset_bottom = 72.0
+offset_left = -79.0
+offset_top = 14.0
+offset_right = -12.0
+offset_bottom = 42.0
 grow_horizontal = 0
 text = "Меню"
 
@@ -641,17 +667,19 @@ autostart = true
 position = Vector2(123, 539)
 
 [node name="Collectibles" type="Node2D" parent="."]
-script = ExtResource("11_jqelk")
+script = SubResource("GDScript_d4asf")
+
+[node name="Timer" type="Timer" parent="Collectibles"]
+wait_time = 3.0
 
 [node name="Coin" parent="Collectibles" instance=ExtResource("11_1nc7d")]
 position = Vector2(184, 542)
 
 [connection signal="timeout" from="Light/DayNight" to="." method="_on_day_night_timeout"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/Panel/VBoxContainer/Resume" to="Manager" method="_on_resume_pressed"]
-[connection signal="pressed" from="CanvasLayer/PauseMenu/Panel/VBoxContainer/Save" to="Manager" method="_on_save_pressed"]
-[connection signal="pressed" from="CanvasLayer/PauseMenu/Panel/VBoxContainer/Load" to="Manager" method="_on_load_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/Panel/VBoxContainer/Quit" to="Manager" method="_on_quit_pressed"]
 [connection signal="pressed" from="CanvasLayer/MenuBtn" to="Manager" method="_on_menu_btn_pressed"]
 [connection signal="timeout" from="Mobs/spawner" to="." method="_on_spawner_timeout"]
+[connection signal="timeout" from="Collectibles/Timer" to="Collectibles" method="_on_timer_timeout"]
 
 [editable path="CanvasLayer/PauseMenu"]

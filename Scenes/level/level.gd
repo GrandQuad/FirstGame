@@ -1,11 +1,10 @@
 extends Node2D
 
 @onready var light = $Light/Sun
-@onready var pointLight = $Light/PointLight2D
-@onready var pointLight2 = $Light/PointLight2D2
-@onready var pointLight3 = $Light/PointLight2D3
-@onready var days = $CanvasLayer/Days
-@onready var animPlay = $CanvasLayer/AnimationPlayer
+@onready var day_text = $CanvasLayer/DayText
+@onready var player = $Character/Player
+
+var mashroom_preload = preload("res://Scenes/Mobs/Mashroom.tscn")
 
 enum State {
 	MORNING,
@@ -18,45 +17,24 @@ var state = State.MORNING
 var day_count: int
 
 func _ready():
-	light.enabled = true
+	Global.gold = 0
 	day_count = 1
-	set_days()
-	days_anim()
+	morning_state()
+	
 
 func morning_state():
-	var tween = get_tree().create_tween()
-	tween.tween_property(light, "energy", 0.2, 20)
+	day_count += 1
+	day_text.text = "DAY " + str(day_count)
+	light.play("sunrise")
 	
-	var tween1 = get_tree().create_tween()
-	tween1.tween_property(pointLight, "energy", 0, 20)
-	
-	var tween2 = get_tree().create_tween()
-	tween2.tween_property(pointLight2, "energy", 0, 20)
-	
-	var tween3 = get_tree().create_tween()
-	tween3.tween_property(pointLight3, "energy", 0, 20)
 	
 
 func evening_state():
 	var tween = get_tree().create_tween()
 	tween.tween_property(light, "energy", 0.95, 20)
 	
-	var tween1 = get_tree().create_tween()
-	tween1.tween_property(pointLight, "energy", 3, 20)
-	
-	var tween2 = get_tree().create_tween()
-	tween2.tween_property(pointLight2, "energy", 3, 20)
-	
-	var tween3 = get_tree().create_tween()
-	tween3.tween_property(pointLight3, "energy", 1.5, 20)
 	
 	
-func day_state():
-	pass
-
-func night_state():
-	pass
-
 func _on_day_night_timeout():
 	match state:
 		State.MORNING:
@@ -70,14 +48,14 @@ func _on_day_night_timeout():
 	else:
 		state = State.MORNING
 		day_count += 1
-		set_days()
-		days_anim()
+		
 
-func days_anim():
-	animPlay.play("Days")
-	await get_tree().create_timer(3).timeout
-	animPlay.play("Days_invisible")
-	
 
-func set_days():
-	days.text = "Day " + str(day_count)
+
+func _on_spawner_timeout():
+	mushroom_spawn()
+
+func mushroom_spawn():
+	var mushroom = mashroom_preload.instantiate() 
+	mushroom.position = Vector2(randi_range(-500, -200), 480)
+	$Mobs.add_child(mushroom)

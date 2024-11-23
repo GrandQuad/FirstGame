@@ -12,7 +12,7 @@ offset_top = 167.0
 offset_right = 887.0
 offset_bottom = 290.0
 theme_override_font_sizes/font_size = 50
-text = "Play"
+text = "Играть"
 
 [node name="Exit" type="Button" parent="."]
 offset_left = 427.0
@@ -20,7 +20,7 @@ offset_top = 383.0
 offset_right = 884.0
 offset_bottom = 506.0
 theme_override_font_sizes/font_size = 50
-text = "Exit"
+text = "Выход"
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("2_15oom")]
 scale = Vector2(1.111, 1.111)

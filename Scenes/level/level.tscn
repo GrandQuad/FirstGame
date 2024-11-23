@@ -469,58 +469,58 @@ sources/0 = SubResource("TileSetAtlasSource_nn2qf")
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_4o2vn"]
 polygon = PackedVector2Array(5004, 586, -2432, 580, -5004, 582, -5004, 716, 5004, 713)
 
-[sub_resource type="Animation" id="Animation_4a8pr"]
-resource_name = "Days"
-length = 3.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("DayText:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.784314)]
-}
-
-[sub_resource type="Animation" id="Animation_pyw4p"]
-resource_name = "Days_invisible"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("DayText:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0.784314), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_jpi8w"]
+[sub_resource type="Animation" id="Animation_fo0qh"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DayText:modulate")
+tracks/0/path = NodePath("Sun:energy")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 0)]
+"values": [0.95]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_bdxud"]
+[sub_resource type="Animation" id="Animation_ydol6"]
+resource_name = "sunrise"
+length = 20.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sun:energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 20),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.95]
+}
+
+[sub_resource type="Animation" id="Animation_rqihq"]
+resource_name = "sunset"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sun:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cujpl"]
 _data = {
-"Days": SubResource("Animation_4a8pr"),
-"Days_invisible": SubResource("Animation_pyw4p"),
-"RESET": SubResource("Animation_jpi8w")
+"RESET": SubResource("Animation_fo0qh"),
+"sunrise": SubResource("Animation_ydol6"),
+"sunset": SubResource("Animation_rqihq")
 }
 
 [node name="Level" type="Node2D"]
@@ -582,7 +582,6 @@ texture = ExtResource("8_b3ev8")
 [node name="Light" type="Node2D" parent="."]
 
 [node name="Sun" type="DirectionalLight2D" parent="Light"]
-enabled = false
 energy = 0.95
 blend_mode = 1
 range_layer_min = -1
@@ -595,23 +594,21 @@ wait_time = 10.0
 autostart = true
 
 [node name="LightAnimation" type="AnimationPlayer" parent="Light"]
+libraries = {
+"": SubResource("AnimationLibrary_cujpl")
+}
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 2
 
 [node name="DayText" type="Label" parent="CanvasLayer"]
-modulate = Color(1, 1, 1, 0)
+modulate = Color(1, 1, 1, 0.784314)
 offset_left = 524.0
 offset_top = 149.0
 offset_right = 733.0
 offset_bottom = 259.0
 theme_override_font_sizes/font_size = 80
 text = "DAY"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer"]
-libraries = {
-"": SubResource("AnimationLibrary_bdxud")
-}
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("8_yplx2")]
 process_mode = 2

@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var light = $Light/Sun
+@onready var light_animation = $Light/LightAnimation
 @onready var day_text = $CanvasLayer/DayText
 @onready var player = $Character/Player
 
@@ -8,8 +8,8 @@ var mashroom_preload = preload("res://Scenes/Mobs/Mashroom.tscn")
 
 enum State {
 	MORNING,
-	EVENING,
 	DAY,
+	EVENING,
 	NIGHT
 }
 
@@ -18,39 +18,31 @@ var day_count: int
 
 func _ready():
 	Global.gold = 0
-	day_count = 1
+	day_count = 0
 	morning_state()
 	
-
 func morning_state():
 	day_count += 1
 	day_text.text = "DAY " + str(day_count)
-	light.play("sunrise")
+	light_animation.play("sunrise")
 	
-	
-
 func evening_state():
-	var tween = get_tree().create_tween()
-	tween.tween_property(light, "energy", 0.95, 20)
-	
-	
+	light_animation.play("sunset")
 	
 func _on_day_night_timeout():
+	if state < 3:
+		state += 1
+	else:
+		state = 0
 	match state:
 		State.MORNING:
 			morning_state()
 		State.EVENING:
 			evening_state()
 			
-	if state < 3:
-		@warning_ignore("int_as_enum_without_cast")
-		state += 1
-	else:
-		state = State.MORNING
-		day_count += 1
+	Signals.emit_signal("day_time",state)
+			
 		
-
-
 
 func _on_spawner_timeout():
 	mushroom_spawn()
